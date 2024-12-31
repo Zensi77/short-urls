@@ -1,0 +1,4 @@
+<app-menu-component *ngIf="!currentUser$"></app-menu-component>
+<app-login-menu *ngIf="currentUser$"></app-login-menu>
+
+<router-outlet></router-outlet>

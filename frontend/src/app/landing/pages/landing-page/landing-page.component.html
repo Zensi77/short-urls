@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Short URLs - Página Principal</title>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+  <main>
+    <!-- Sección Hero -->
+    <section
+      class="text-center px-6 py-20 bg-gradient-to-b from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900"
+      id="inicio">
+      <h2 class="text-5xl font-extrabold text-blue-600 dark:text-blue-400">Simplifica tus enlaces</h2>
+      <p class="mt-6 text-xl text-gray-700 dark:text-gray-300">Acorta URLs, realiza seguimiento y mejora tu presencia en
+        línea.</p>
+      <div class="mt-10">
+        <button
+          class="p-button p-component p-button-rounded p-button-lg bg-blue-500 hover:bg-blue-600 text-white px-8 py-4">
+          <span class="p-button-icon p-icon pi pi-link"></span>
+          <span class="ml-2 p-button-label" routerLink="/auth/sign-in">Comenzar</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Sección Características -->
+    <section id="caracteristicas" class="mt-16 py-16 bg-gray-100 dark:bg-gray-800">
+      <div class="container mx-auto px-6 text-center">
+        <h3 class="text-3xl font-bold text-gray-800 dark:text-gray-200">¿Por qué elegir Short URLs?</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
+          <div class="p-8 bg-white dark:bg-gray-700 shadow-lg rounded-lg hover:shadow-xl transition">
+            <i class="pi pi-chart-bar text-blue-600 text-5xl"></i>
+            <h4 class="mt-6 font-bold text-xl">Análisis</h4>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Sigue los clics, ubicaciones y dispositivos de cada URL.
+            </p>
+          </div>
+          <div class="p-8 bg-white dark:bg-gray-700 shadow-lg rounded-lg hover:shadow-xl transition">
+            <i class="pi pi-lock text-blue-600 text-5xl"></i>
+            <h4 class="mt-6 font-bold text-xl">Seguridad</h4>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Tus datos están protegidos con cifrado estándar de la
+              industria.</p>
+          </div>
+          <div class="p-8 bg-white dark:bg-gray-700 shadow-lg rounded-lg hover:shadow-xl transition">
+            <i class="pi pi-user text-blue-600 text-5xl"></i>
+            <h4 class="mt-6 font-bold text-xl">Fácil de usar</h4>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Interfaz intuitiva para individuos y equipos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Precios -->
+    <section id="precios" class="mt-16 py-16">
+      <div class="container mx-auto px-6 text-center">
+        <h3 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Planes de precios accesibles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
+          <div
+            class="p-8 bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-xl transition">
+            <h4 class="font-bold text-xl">Gratis</h4>
+            <p class="mt-4 text-2xl font-extrabold text-gray-800 dark:text-gray-200">$0/mes</p>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Funciones básicas para uso personal.</p>
+            <button
+              class="p-button p-component p-button-rounded bg-gray-500 hover:bg-gray-600 text-white mt-6 px-6 py-3">
+              Elegir Plan
+            </button>
+          </div>
+          <div
+            class="p-8 bg-blue-100 dark:bg-blue-900 shadow-lg rounded-lg border border-blue-300 dark:border-blue-700 hover:shadow-xl transition">
+            <h4 class="font-bold text-xl">Pro</h4>
+            <p class="mt-4 text-2xl font-extrabold text-gray-800 dark:text-gray-200">$10/mes</p>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Análisis avanzados y dominios personalizados.</p>
+            <button
+              class="p-button p-component p-button-rounded bg-blue-500 hover:bg-blue-600 text-white mt-6 px-6 py-3">
+              Elegir Plan
+            </button>
+          </div>
+          <div
+            class="p-8 bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-xl transition">
+            <h4 class="font-bold text-xl">Empresarial</h4>
+            <p class="mt-4 text-2xl font-extrabold text-gray-800 dark:text-gray-200">Precios Personalizados</p>
+            <p class="mt-4 text-gray-600 dark:text-gray-300">Soluciones a medida para tu negocio.</p>
+            <button
+              class="p-button p-component p-button-rounded bg-gray-500 hover:bg-gray-600 text-white mt-6 px-6 py-3">
+              Contáctanos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="mt-16 py-16 bg-gray-100 dark:bg-gray-800">
+      <div class="container mx-auto px-6 text-center">
+        <h3 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Contáctanos</h3>
+        <p class="mt-4 text-lg text-gray-700 dark:text-gray-300">¿Tienes preguntas? Nos encantaría ayudarte.</p>
+        <form class="mt-8 space-y-6 max-w-md mx-auto">
+          <input type="text" placeholder="Tu Nombre"
+            class="w-full p-4 border rounded shadow-sm focus:ring-2 focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
+          <input type="email" placeholder="Tu Correo Electrónico"
+            class="w-full p-4 border rounded shadow-sm focus:ring-2 focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
+          <textarea placeholder="Tu Mensaje" rows="4"
+            class="w-full p-4 border rounded shadow-sm focus:ring-2 focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"></textarea>
+          <button class="p-button p-component bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded">
+            Enviar Mensaje
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>

@@ -9,10 +9,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Ripple } from 'primeng/ripple';
 import { AuthService } from '../../../auth/services/auth.service';
 import { User as FirebaseUser } from 'firebase/auth';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login-menu',
   imports: [
+    RouterModule,
+    RouterLink,
     Menubar,
     BadgeModule,
     AvatarModule,
@@ -26,43 +29,43 @@ import { User as FirebaseUser } from 'firebase/auth';
 export class LoginMenuComponent implements OnInit {
   items: MenuItem[] | undefined;
 
+  private readonly router = inject(Router);
   readonly authService = inject(AuthService);
-  currentUser: FirebaseUser | null = null;
+  currentUser: FirebaseUser | null = this.authService.userLogged();
 
   ngOnInit() {
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
+    this.authService.userProfile$.subscribe((profile) => {
+      if (profile) {
+        this.items = [
+          {
+            label: 'Home',
+            icon: 'pi pi-home',
+            routerLink: '/dashboard',
+          },
+          {
+            label: 'Urls',
+            icon: 'pi pi-globe',
+          },
+          {
+            label: 'Stats',
+            icon: 'pi pi-chart-bar',
+            disabled: this.authService.userPlan === 'free',
+            replaceUrl: true,
+            routerLink: '/stats',
+          },
+          {
+            label: 'Admin Panel',
+            icon: 'pi pi-cog',
+            routerLink: '/admin',
+            visible: this.authService.isAdmin,
+          },
+        ];
+      }
     });
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-      },
-      {
-        label: 'Projects',
-        icon: 'pi pi-search',
-        badge: '3',
-        items: [
-          {
-            label: 'Core',
-            icon: 'pi pi-bolt',
-            shortcut: '⌘+S',
-          },
-          {
-            label: 'Blocks',
-            icon: 'pi pi-server',
-            shortcut: '⌘+B',
-          },
-          {
-            separator: true,
-          },
-          {
-            label: 'UI Kit',
-            icon: 'pi pi-pencil',
-            shortcut: '⌘+U',
-          },
-        ],
-      },
-    ];
+  }
+
+  signOut() {
+    this.authService.signOut();
+    this.router.navigate(['/']);
   }
 }

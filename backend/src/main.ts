@@ -1,14 +1,34 @@
-import express from 'express';
+import { envs } from './config/envs';
+import { MongoDB } from './data/mongo/mongo-db';
+import { AppRoutes } from './presentation/routes';
+import { Server } from './presentation/server';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import admin from 'firebase-admin';
+import path from 'path';
 
-const app = express();
+(async () => {
+  main();
+})();
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
-});
+async function main() {
+  const serviceAccount = path.join(
+    __dirname,
+    '../../../../backend/firebase-admin-sdk.json'
+  );
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
-});
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+
+  await MongoDB.connect({
+    mongoUrl: envs.MONGO_URL,
+    dbName: envs.MONGO_DB,
+  });
+
+  const server = new Server({
+    port: envs.PORT,
+    routes: AppRoutes.routes,
+  });
+
+  server.start();
+}

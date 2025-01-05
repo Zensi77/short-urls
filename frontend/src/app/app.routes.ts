@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { isAuthenticatedGuard } from './auth/guards/isAuthenticated.guard';
 import { isNotAuthenticatedGuard } from './auth/guards/isNotAuthenticated.guard';
+import { isAdminGuard } from './admin/guards/isAdmin.guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,11 @@ export const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.routes'),
     canActivate: [isAuthenticatedGuard],
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes'),
+    canActivate: [isAdminGuard],
   },
   {
     path: '**',

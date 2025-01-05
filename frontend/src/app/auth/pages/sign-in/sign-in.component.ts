@@ -9,11 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { message } from '../../utils/validators';
 import { CommonModule } from '@angular/common';
-
-interface User {
-  email: string;
-  password: string;
-}
+import Swal from 'sweetalert2';
 
 @Component({
   imports: [
@@ -31,8 +27,8 @@ export default class SignInComponent {
   private readonly fb = inject(NonNullableFormBuilder);
 
   readonly loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['juanma@gmail.com', [Validators.required, Validators.email]],
+    password: ['123456', [Validators.required, Validators.minLength(6)]],
   });
 
   error(field: string) {
@@ -49,12 +45,28 @@ export default class SignInComponent {
       return;
     }
 
-    const { email, password } = this.loginForm.value;
-    try {
-      this._authService.signIn({ email, password } as User);
-      this._router.navigateByUrl('/dashboard');
-    } catch (error) {
-      console.error(error);
-    }
+    const email = this.loginForm.get('email')?.value as string;
+    const password = this.loginForm.get('password')?.value as string;
+    this._authService
+      .signIn({ email, password })
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: `Bienvenido! ${
+            this._authService.userLogged()?.displayName ||
+            this._authService.userLogged()?.email
+          }`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this._router.navigateByUrl('/dashboard');
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Credenciales incorrectas',
+        });
+      });
   }
 }

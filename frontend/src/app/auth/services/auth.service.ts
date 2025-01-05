@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
@@ -8,27 +9,43 @@ import {
   signOut as firebaseSignOut,
 } from '@angular/fire/auth';
 import { User as FirebaseUser } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { Subscription, User } from '../interfaces/user.interface';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private _auth = inject(Auth);
+  private _http = inject(HttpClient);
+  private _router = inject(Router);
 
+  loading = signal<boolean>(false);
   userLogged = signal<FirebaseUser | null>(null);
 
-  // Usamos un Observable que emite el usuario o null
-  currentUser$ = new Observable<FirebaseUser | null>((observer) => {
-    // Escuchar cambios en la autenticación
-    const unsubscribe = this._auth.onAuthStateChanged((user) => {
-      observer.next(user); // Emitir el usuario o null
-      this.userLogged.set(user);
-    });
+  private userProfileSubject = new BehaviorSubject<User | null>(null);
+  userProfile$ = this.userProfileSubject.asObservable();
 
-    // Limpieza cuando se desuscriba el Observable
-    return () => unsubscribe();
-  });
+  constructor() {
+    // Escuchar cambios en la autenticación
+    this.loading.set(true);
+    this._auth.onAuthStateChanged(async (user) => {
+      this.userLogged.set(user);
+      this.loading.set(false);
+      if (user) {
+        const token = await this.getToken();
+        if (token) {
+          sessionStorage.setItem('token', token);
+        }
+        this.validateUser();
+      } else {
+        sessionStorage.removeItem('token');
+        this._router.navigate(['/']);
+      }
+    });
+  }
 
   // Registrar un usuario con email y contraseña
   signUp(user: { email: string; password: string }) {
@@ -39,13 +56,13 @@ export class AuthService {
   // Iniciar sesión con email y contraseña
   signIn(user: { email: string; password: string }) {
     const { email, password } = user;
-    return signInWithEmailAndPassword(this._auth, email, password).catch(
-      (err) => console.log(err)
-    );
+    return signInWithEmailAndPassword(this._auth, email, password);
   }
 
   // Cerrar sesión
   signOut() {
+    sessionStorage.removeItem('token');
+    this._router.navigate(['/']);
     return firebaseSignOut(this._auth);
   }
 
@@ -53,5 +70,62 @@ export class AuthService {
   submitWithGoogle() {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this._auth, provider);
+  }
+
+  validateUser() {
+    if (!this.userLogged()) {
+      console.error('User is not logged');
+      return;
+    }
+    const url = `${environment.apiUrl}/auth`;
+    this._http.post<User>(url, {}).subscribe(
+      (user) => {
+        this.userProfileSubject.next(user);
+        this.getSuscription(user.subscription as string);
+      },
+      (error) => {
+        this.signOut();
+      }
+    );
+  }
+
+  getSuscription(subscriptionId: string) {
+    if (!subscriptionId) {
+      console.error('Subscription ID is invalid');
+      return;
+    }
+
+    const url = `${environment.apiUrl}/subscription/${subscriptionId}`;
+    this._http.get<Subscription>(url).subscribe(
+      (subscription) => {
+        const userProfile = this.userProfileSubject.value;
+        if (userProfile) {
+          this.userProfileSubject.next({ ...userProfile, subscription });
+        }
+      },
+      (error) => {
+        console.error('Error fetching subscription:', error);
+      }
+    );
+  }
+
+  async getToken() {
+    const user = this.userLogged();
+    if (!user) return null;
+
+    return await user.getIdToken();
+  }
+
+  get isAdmin() {
+    const user = this.userProfileSubject.value;
+    return user?.role === 'admin';
+  }
+
+  get userPlan() {
+    const user = this.userProfileSubject.value;
+    if (!user) return null;
+    return typeof user?.subscription === 'object'
+      ? user.subscription.name
+      : null;
   }
 }

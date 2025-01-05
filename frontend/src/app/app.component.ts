@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuComponent } from './shared/components/menu-component/menu-component.component';
 import { AuthService } from './auth/services/auth.service';
@@ -15,8 +15,5 @@ export class AppComponent {
   title = 'Short URLs';
 
   private readonly _authService = inject(AuthService);
-  currentUser$;
-  constructor() {
-    this.currentUser$ = this._authService.currentUser$;
-  }
+  currentUser$ = computed(() => this._authService.userLogged());
 }

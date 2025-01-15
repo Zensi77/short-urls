@@ -1,0 +1,17 @@
+@import 'animate.css';
+
+div {
+  p-autocomplete {
+    width: 75%;
+  }
+
+  ::ng-deep p-table table {
+    text-align: center;
+  }
+
+  ::ng-deep .p-datatable-tbody > tr > td,
+  ::ng-deep .p-datatable-thead > tr > th {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+}

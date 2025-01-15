@@ -1,3 +1,6 @@
+import { z } from 'zod';
+import { logger } from '../../config/winston';
+
 export class SubscriptionDto {
   private constructor(
     public readonly name: string,
@@ -7,43 +10,35 @@ export class SubscriptionDto {
     public readonly advancedStats?: boolean
   ) {}
 
+  private static schema = z.object({
+    name: z.string().min(1, 'Name is required'),
+    price: z
+      .number()
+      .min(0, 'Price is required')
+      .positive('Price must be a positive number'),
+    duration: z.enum(['monthly', 'yearly']),
+    customLinks: z.boolean().optional().default(false),
+    advancedStats: z.boolean().optional().default(false),
+  });
+
   public static create(obj: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   }): [string?, SubscriptionDto?] {
-    const { name, price, duration, customLinks, advancedStats } = obj;
-
-    if (!name) {
-      return ['Name is required'];
+    try {
+      const validatedData = this.schema.parse(obj);
+      const { name, price, duration, customLinks, advancedStats } =
+        validatedData;
+      return [
+        null,
+        new SubscriptionDto(name, price, duration, customLinks, advancedStats),
+      ];
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        logger.error(error.errors);
+        return [error.errors[0].message];
+      }
+      return ['An unknown error occurred'];
     }
-
-    if (typeof price !== 'number') {
-      return ['Price must be a number'];
-    }
-
-    if (price < 0) {
-      return ['Price must be a positive number'];
-    }
-
-    if (!duration) {
-      return ['Duration is required'];
-    }
-
-    if (!['monthly', 'yearly'].includes(duration)) {
-      return ['Duration is invalid'];
-    }
-
-    if (customLinks !== undefined && typeof customLinks !== 'boolean') {
-      return ['CustomLinks must be a boolean'];
-    }
-
-    if (advancedStats !== undefined && typeof advancedStats !== 'boolean') {
-      return ['AdvancedStats must be a boolean'];
-    }
-
-    return [
-      null,
-      new SubscriptionDto(name, price, duration, customLinks, advancedStats),
-    ];
   }
 }

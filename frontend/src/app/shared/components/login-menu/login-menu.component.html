@@ -15,7 +15,10 @@
             </a>
         </ng-template>
         <ng-template #end>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
+                <i id="darkMode" class="cursor-pointer" [ngClass]="getIconMode()" tabindex="0"
+                    (click)="toogleDarkMode()" (keydown.enter)="toogleDarkMode()"
+                    (keydown.space)="toogleDarkMode()"></i>
                 <i class="pi pi-sign-out cursor-pointer" tabindex="0" (click)="signOut()" (keydown.enter)="signOut()"
                     (keydown.space)="signOut()"></i>
                 <p-avatar

@@ -9,11 +9,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../../environments/environment';
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient,
-  withInterceptors,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { UserInterceptor } from './auth/interceptors/user.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -32,6 +28,9 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: Aura,
+        options: {
+          darkModeSelector: '.dark-mode',
+        },
       },
     }),
     provideHttpClient(withInterceptors([UserInterceptor])),

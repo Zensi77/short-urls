@@ -57,14 +57,13 @@ export default class SignInComponent {
             this._authService.userLogged()?.email
           }`,
           showConfirmButton: false,
-          timer: 1500,
+          timer: 1000,
         });
         this._router.navigateByUrl('/dashboard');
       })
       .catch((error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
           text: 'Credenciales incorrectas',
         });
       });

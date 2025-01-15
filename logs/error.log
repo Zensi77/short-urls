@@ -1,0 +1,173 @@
+[2025-01-08T19:23:35.864Z] [31merror[39m: [object Object]
+[2025-01-08T19:27:12.068Z] [31merror[39m: [object Object]
+[2025-01-08T19:27:57.903Z] [31merror[39m: [object Object]
+[2025-01-08T19:28:49.489Z] [31merror[39m: [object Object]
+[2025-01-09T20:01:57.042Z] [31merror[39m: [object Object]
+[2025-01-09T20:02:50.825Z] [31merror[39m: [object Object]
+[2025-01-09T20:26:13.812Z] [31merror[39m: Link validation failed: userId: Path `userId` is required.
+ValidationError: Link validation failed: userId: Path `userId` is required.
+    at model.Document.invalidate (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3331:32)
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3092:17
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1407:9
+    at processTicksAndRejections (node:internal/process/task_queues:85:11)
+[2025-01-09T20:29:16.630Z] [31merror[39m: Link validation failed: user: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "user" because of "BSONError"
+ValidationError: Link validation failed: user: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "user" because of "BSONError"
+    at model.Document.invalidate (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3331:32)
+    at model.$set (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:1482:12)
+    at model.$set (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:1136:16)
+    at model.Document (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:177:12)
+    at model.Model (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:129:12)
+    at new model (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:4657:15)
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:2691:20
+    at Array.map (<anonymous>)
+    at Function.create (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:2679:34)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:41:36)
+[2025-01-09T20:42:38.192Z] [31merror[39m: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+    at new ObjectId (C:\Users\USUARIO\Desktop\short-urls\node_modules\bson\src\objectid.ts:120:15)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T20:44:32.758Z] [31merror[39m: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+    at new ObjectId (C:\Users\USUARIO\Desktop\short-urls\node_modules\bson\src\objectid.ts:120:15)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:22)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T20:45:55.304Z] [31merror[39m: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:390:32)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T20:46:30.792Z] [31merror[39m: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:390:32)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T20:47:06.381Z] [31merror[39m: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:319:34)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T21:33:34.545Z] [31merror[39m: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:319:34)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T21:33:51.402Z] [31merror[39m: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:319:34)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T21:36:00.417Z] [31merror[39m: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+CastError: Cast to ObjectId failed for value "{ uid: 'tdnwBanNWcc1pWY4cRMUcRQlVJJ2' }" (type Object) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaObjectId.SchemaType.applySetters (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1255:12)
+    at SchemaObjectId.SchemaType.castForQuery (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1673:17)
+    at cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\cast.js:319:34)
+    at model.Query.Query.cast (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4889:12)
+    at model.Query.Query._castConditions (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2306:10)
+    at model.Query._findOne (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:2630:8)
+    at model.Query.exec (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\query.js:4438:80)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:42:20)
+[2025-01-09T21:37:24.598Z] [31merror[39m: Link validation failed: user: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "user" because of "BSONError"
+ValidationError: Link validation failed: user: Cast to ObjectId failed for value "tdnwBanNWcc1pWY4cRMUcRQlVJJ2" (type string) at path "user" because of "BSONError"
+    at model.Document.invalidate (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3331:32)
+    at model.$set (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:1482:12)
+    at model.$set (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:1136:16)
+    at model.Document (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:177:12)
+    at model.Model (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:129:12)
+    at new model (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:4657:15)
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:2691:20
+    at Array.map (<anonymous>)
+    at Function.create (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\model.js:2679:34)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:45:36)
+[2025-01-09T21:46:46.417Z] [31merror[39m: [object Object]
+[2025-01-09T21:46:46.418Z] [31merror[39m: Expected string, received object
+Error: Expected string, received object
+    at Function.badRequest (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\errors\custom.error.ts:6:12)
+    at Function.fromObject (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\entities\link.entity.ts:45:28)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:53:25)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T21:48:15.154Z] [31merror[39m: Link validation failed: user: Path `user` is required.
+ValidationError: Link validation failed: user: Path `user` is required.
+    at model.Document.invalidate (C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3331:32)
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\document.js:3092:17
+    at C:\Users\USUARIO\Desktop\short-urls\node_modules\mongoose\lib\schemaType.js:1407:9
+    at processTicksAndRejections (node:internal/process/task_queues:85:11)
+[2025-01-09T21:48:50.617Z] [31merror[39m: [object Object]
+[2025-01-09T21:48:50.618Z] [31merror[39m: Expected string, received object
+Error: Expected string, received object
+    at Function.badRequest (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\errors\custom.error.ts:6:12)
+    at Function.fromObject (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\entities\link.entity.ts:45:28)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:56:25)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T21:50:11.228Z] [31merror[39m: An unknown error occurred
+Error: An unknown error occurred
+    at Function.badRequest (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\errors\custom.error.ts:6:12)
+    at Function.fromObject (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\entities\link.entity.ts:47:26)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:56:25)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T21:53:48.370Z] [31merror[39m: [object Object]
+[2025-01-09T21:53:48.370Z] [31merror[39m: Expected string, received object
+Error: Expected string, received object
+    at Function.badRequest (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\errors\custom.error.ts:6:12)
+    at Function.fromObject (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\entities\link.entity.ts:48:28)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:56:25)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-09T21:56:10.830Z] [31merror[39m: [object Object]
+[2025-01-09T21:56:10.831Z] [31merror[39m: Expected string, received object
+Error: Expected string, received object
+    at Function.badRequest (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\errors\custom.error.ts:6:12)
+    at Function.fromObject (C:\Users\USUARIO\Desktop\short-urls\backend\src\domain\entities\link.entity.ts:48:28)
+    at LinkService.createLink (C:\Users\USUARIO\Desktop\short-urls\backend\src\presentation\services\link.service.ts:57:25)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-01-11T18:11:41.785Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T18:11:41.786Z] [31merror[39m: Error creating link DTO:
+[2025-01-11T18:13:05.051Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T18:13:05.051Z] [31merror[39m: Error creating link DTO:
+[2025-01-11T18:14:10.365Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T18:14:10.366Z] [31merror[39m: Error creating link DTO:
+[2025-01-11T18:16:08.375Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T18:16:08.375Z] [31merror[39m: Error creating link DTO:
+[2025-01-11T20:13:16.091Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T20:14:19.730Z] [31merror[39m: [object Object],[object Object]
+[2025-01-11T20:16:42.774Z] [31merror[39m: [object Object]
+[2025-01-11T20:17:45.872Z] [31merror[39m: [object Object]
+[2025-01-11T21:26:19.887Z] [31merror[39m: [object Object]
+[2025-01-11T21:29:29.055Z] [31merror[39m: [object Object]
+[2025-01-11T21:40:36.352Z] [31merror[39m: [object Object]

@@ -43,13 +43,13 @@ export class LoginMenuComponent implements OnInit {
             routerLink: '/dashboard',
           },
           {
-            label: 'Urls',
-            icon: 'pi pi-globe',
+            label: 'Suscripcion',
+            icon: 'pi pi-money-bill',
           },
           {
             label: 'Stats',
             icon: 'pi pi-chart-bar',
-            disabled: this.authService.userPlan === 'free',
+            disabled: this.authService.userPlan?.name === 'free',
             replaceUrl: true,
             routerLink: '/stats',
           },
@@ -62,10 +62,33 @@ export class LoginMenuComponent implements OnInit {
         ];
       }
     });
+
+    const darkMode = localStorage.getItem('dark-mode');
+    if (darkMode) this.toogleDarkMode();
   }
 
-  signOut() {
-    this.authService.signOut();
+  toogleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('dark-mode');
+
+    if (element?.classList.contains('dark-mode')) {
+      localStorage.setItem('dark-mode', 'true');
+    } else {
+      localStorage.removeItem('dark-mode');
+    }
+
+    document.querySelector('#darkMode')?.classList.remove('pi-moon');
+    document.querySelector('#darkMode')?.classList.add('pi-sun');
+  }
+
+  isDarkMode = () =>
+    document.querySelector('html')?.classList.contains('dark-mode');
+  getIconMode() {
+    return this.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon';
+  }
+
+  async signOut() {
+    await this.authService.signOut();
     this.router.navigate(['/']);
   }
 }

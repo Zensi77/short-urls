@@ -1,7 +1,6 @@
-import { UserDto } from '../../domain/dtos/user.dto';
 import { Request, Response } from 'express';
+import { CustomErrors, UserDto } from '../../domain';
 import { AuthService } from '../services/auth.service';
-import { CustomErrors } from '../../domain/errors/custom.error';
 
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -16,14 +15,15 @@ export class AuthController {
 
   init = (req: Request, res: Response) => {
     const user = req.body.user;
+    const { uid, email, email_verified, firebase, sign_in_provider } = user;
+    console.log(user);
     const [error, userDto] = UserDto.create({
-      uid: user.uid,
-      email: user.email,
-      email_verified: user.email_verified,
-      sign_in_provider: user.firebase.sign_in_provider,
+      uid,
+      email,
+      emailVerified: email_verified,
+      sign_in_provider: firebase.sign_in_provider,
     });
     if (error) {
-      console.error('Error creating user DTO:', error);
       this.handleError(error, res);
     }
 

@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 
 export const linkModel = new mongoose.Schema(
   {
-    url: {
+    originalUrl: {
+      type: String,
+      required: true,
+    },
+    name: {
       type: String,
       required: true,
     },
@@ -19,7 +23,7 @@ export const linkModel = new mongoose.Schema(
       type: String,
       required: false,
     },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,

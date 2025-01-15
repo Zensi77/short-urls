@@ -1,8 +1,6 @@
-import { CustomErrors } from '../../domain/errors/custom.error';
-import { User } from '../../data/models/user.model';
-import { UserDto } from '../../domain/dtos/user.dto';
-import { UserEntity } from '../../domain/entities/user.entity';
-import { Subscription } from '../../data/models/subscription.model';
+import { Subscription, User } from '../../data';
+import { logger } from '../../config/winston';
+import { CustomErrors, UserDto, UserEntity } from '../../domain';
 
 export class AuthService {
   public async verifyUser(userDto: UserDto) {
@@ -18,7 +16,7 @@ export class AuthService {
         if (!subscription) {
           throw CustomErrors.internalError('Subscription not found');
         }
-        user.subscription = subscription._id;
+        user.subscription = subscription.id;
       }
       await user.save();
 
@@ -26,7 +24,7 @@ export class AuthService {
 
       return userEntity;
     } catch (error) {
-      console.error('Error creating user:', error);
+      logger.error(error);
       throw CustomErrors.internalError(error.message);
     }
   }

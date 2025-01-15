@@ -1,28 +1,52 @@
+import { z } from 'zod';
 import { CustomErrors } from '../index';
+import { logger } from '../../config/winston';
+import { mongo } from 'mongoose';
 export class LinkEntity {
   constructor(
     public readonly id: string,
-    public readonly url: string,
+    public readonly name: string,
+    public readonly originalUrl: string,
     public shortUrl: string,
     public readonly clicks = 0,
-    public readonly user: string,
+    public readonly user: mongo.ObjectId,
     public readonly description?: string
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private static schema = z.object({
+    id: z.string().min(1, 'Id is required'),
+    name: z.string().min(1, 'Name is required'),
+    originalUrl: z.string().min(1, 'Url is required'),
+    shortUrl: z.string().min(1, 'ShortUrl is required'),
+    clicks: z.number().min(0, 'Clicks must be a non-negative number'),
+    user: z.union([
+      z.string().regex(/^[0-9a-fA-F]{24}$/),
+      z.instanceof(mongo.ObjectId),
+    ]),
+    description: z.string().optional(),
+  });
+
   static fromObject(obj: { [key: string]: any }): LinkEntity {
-    const { id, url, shortUrl, description, clicks, user } = obj;
-
-    if (!id) throw CustomErrors.badRequest('Id is required');
-
-    if (!url) throw CustomErrors.badRequest('Url is required');
-
-    if (!shortUrl) throw CustomErrors.badRequest('ShortUrl is required');
-
-    if (!clicks) throw CustomErrors.badRequest('Clicks is required');
-
-    if (!user) throw CustomErrors.badRequest('User is required');
-
-    return new LinkEntity(id, url, shortUrl, description, clicks, user);
+    try {
+      // Validar los datos usando Zod
+      const validatedData = this.schema.parse(obj);
+      const { id, name, originalUrl, shortUrl, clicks, user, description } =
+        validatedData;
+      return new LinkEntity(
+        id,
+        name,
+        originalUrl,
+        shortUrl,
+        clicks,
+        new mongo.ObjectId(user),
+        description
+      );
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        logger.error(error.errors);
+        throw CustomErrors.badRequest(error.errors[0].message);
+      }
+      throw CustomErrors.badRequest('An unknown error occurred');
+    }
   }
 }

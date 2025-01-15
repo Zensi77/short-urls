@@ -14,6 +14,7 @@ export class LinkRoutes {
 
     router.get('/', controller.getLinks);
     router.get('/:id', controller.getOneLink);
+    router.post('/validate/', controller.validateLink);
     router.post('/', controller.createLink);
     router.put('/:id', controller.modifyLink);
     router.delete('/:id', controller.deleteLink);

@@ -36,13 +36,13 @@ export class AuthService {
       this.loading.set(false);
       if (user) {
         const token = await this.getToken();
+        console.log(token);
         if (token) {
           sessionStorage.setItem('token', token);
         }
         this.validateUser();
       } else {
-        sessionStorage.removeItem('token');
-        this._router.navigate(['/']);
+        this.signOut();
       }
     });
   }
@@ -63,6 +63,8 @@ export class AuthService {
   signOut() {
     sessionStorage.removeItem('token');
     this._router.navigate(['/']);
+    this.userProfileSubject.next(null);
+    this.userLogged.set(null);
     return firebaseSignOut(this._auth);
   }
 
@@ -72,7 +74,7 @@ export class AuthService {
     return signInWithPopup(this._auth, provider);
   }
 
-  validateUser() {
+  private validateUser() {
     if (!this.userLogged()) {
       console.error('User is not logged');
       return;
@@ -84,12 +86,13 @@ export class AuthService {
         this.getSuscription(user.subscription as string);
       },
       (error) => {
+        console.error('Error validating user');
         this.signOut();
       }
     );
   }
 
-  getSuscription(subscriptionId: string) {
+  private getSuscription(subscriptionId: string) {
     if (!subscriptionId) {
       console.error('Subscription ID is invalid');
       return;
@@ -113,7 +116,9 @@ export class AuthService {
     const user = this.userLogged();
     if (!user) return null;
 
-    return await user.getIdToken();
+    const token = sessionStorage.getItem('token') ?? (await user.getIdToken());
+
+    return token;
   }
 
   get isAdmin() {
@@ -124,8 +129,6 @@ export class AuthService {
   get userPlan() {
     const user = this.userProfileSubject.value;
     if (!user) return null;
-    return typeof user?.subscription === 'object'
-      ? user.subscription.name
-      : null;
+    return typeof user?.subscription === 'object' ? user.subscription : null;
   }
 }

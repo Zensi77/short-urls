@@ -28,6 +28,13 @@ export const routes: Routes = [
     canActivate: [isAdminGuard],
   },
   {
+    path: ':shortUrl',
+    loadComponent: () =>
+      import('./public/pages/redirect.component').then(
+        (m) => m.RedirectComponent
+      ),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./shared/pages/not-found-page/not-found-page.component').then(

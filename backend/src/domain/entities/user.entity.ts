@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { logger } from '../../config/winston';
 import { CustomErrors } from '../errors/custom.error';
 
 export class UserEntity {
@@ -12,48 +14,48 @@ export class UserEntity {
     public readonly subscription: string
   ) {}
 
+  private static schema = z.object({
+    id: z.string().min(1, 'Id is required'),
+    uid: z.string().min(1, 'UID is required'),
+    email: z.string().email('Email is invalid').min(1, 'Email is required'),
+    plan: z.string().min(1, 'Plan is required'),
+    email_verified: z.boolean().default(false),
+    role: z.enum(['user', 'admin']).default('user'),
+    sign_in_provider: z.string().min(1, 'Sign in provider is required'),
+    subscription: z.string().min(1, 'Subscription is required'),
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static fromObject(obj: { [key: string]: any }): UserEntity {
-    const {
-      id,
-      uid,
-      email,
-      email_verified,
-      role = 'user',
-      sign_in_provider,
-      subscription,
-    } = obj;
+    try {
+      const dataValidated = this.schema.parse(obj);
+      const {
+        id,
+        uid,
+        email,
+        plan,
+        email_verified,
+        role = 'user',
+        sign_in_provider,
+        subscription,
+      } = dataValidated;
 
-    if (!id) throw CustomErrors.badRequest('Id is required');
-
-    if (!uid) throw CustomErrors.badRequest('uid is required');
-
-    if (!email) throw CustomErrors.badRequest('Email is required');
-
-    if (typeof email_verified !== 'boolean')
-      throw CustomErrors.badRequest('Email verification status is required');
-
-    if (!sign_in_provider)
-      throw CustomErrors.badRequest('Sign in provider is required');
-
-    if (!role) throw CustomErrors.badRequest('Role is required');
-
-    if (!['user', 'admin'].includes(role))
-      throw CustomErrors.badRequest('Role is invalid');
-
-    if (!subscription || typeof subscription !== 'string') {
-      throw CustomErrors.badRequest('Subscription is invalid');
+      return new UserEntity(
+        id,
+        uid,
+        email,
+        email_verified,
+        plan,
+        role,
+        sign_in_provider,
+        subscription
+      );
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        logger.error(error.errors);
+        throw CustomErrors.badRequest(error.errors[0].message);
+      }
+      throw CustomErrors.internalError('An unknown error occurred');
     }
-
-    return new UserEntity(
-      id,
-      uid,
-      email,
-      email_verified,
-      subscription,
-      role,
-      sign_in_provider,
-      subscription
-    );
   }
 }

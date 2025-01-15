@@ -1,0 +1,115 @@
+<div *ngIf="loading; else content">
+    <div class="flex justify-center items-center" style="height: 100vh;">
+        <p-progress-spinner ariaLabel="Cargando..." styleClass="spinner-lg" animationDuration="1s"></p-progress-spinner>
+    </div>
+</div>
+
+
+<ng-template #content>
+    <p-toast /><p-confirmpopup />
+    <div class="card mt-3 gap-12 w-full flex justify-center">
+        <p-autocomplete [(ngModel)]="value" [dropdown]="true" [suggestions]="filteredName"
+            (completeMethod)="search($event)" [style]="{'width': '100%'}" (input)="onChange($event)"></p-autocomplete>
+        <p-button label="Nuevo link" icon="pi pi-plus-circle" (onClick)="newLink()" />
+        <p-dialog header="Crear nuevo link" [modal]="true" [(visible)]="linkDialog"
+            [style]="{ width: '50%', height: '60%' }">
+            <form [formGroup]="LinkForm">
+                <div class="flex items-center gap-4 mb-4">
+                    <label for="name" class="font-semibold w-24">Nombre</label>
+                    <input pInputText id="name" class="flex-auto p-2 border-2 rounded" autocomplete="off"
+                        formControlName="name" /><br>
+                    @if (LinkForm.get('name')?.getError('required') && LinkForm.get('name')?.touched)
+                    {
+                    <p-message severity="error" text="Introduce un nombre"></p-message>
+                    }
+                </div>
+                <div class="flex items-center gap-4 mb-4">
+                    <label for="url" class="font-semibold w-24">URL</label>
+                    <input pInputText id="url" class="flex-auto p-2 border-2 rounded" autocomplete="off"
+                        formControlName="url" /><br>
+                    @if (LinkForm.get('url')?.getError('required') && LinkForm.get('url')?.touched)
+                    {
+                    <p-message severity="error" text="Introduce una URL"></p-message>
+                    } @else if (LinkForm.get('url')?.getError('pattern') && LinkForm.get('url')?.touched)
+                    {
+                    <p-message severity="error" text="URL no valida"></p-message>
+                    }
+                </div>
+                <div class="flex items-center gap-4 mb-4" *ngIf="plan?.name !== 'free'">
+                    <label for="url" class="font-semibold w-24">URL acortada</label>
+                    <input pInputText id="url" class="flex-auto p-2 border-2 rounded" autocomplete="off"
+                        formControlName="shortUrl" /><br>
+                    @if (LinkForm.get('shortUrl')?.touched && LinkForm.get('shortUrl')?.getError('urlInvalid'))
+                    {
+                    <p-message severity="error" text="URL en uso"></p-message>
+                    } @else if (LinkForm.get('shortUrl')?.touched && LinkForm.get('shortUrl')?.getError('pattern'))
+                    {
+                    <p-message severity="error" text="URL no valida"></p-message>
+                    }
+                </div>
+                <p class="text-sm text-gray-400">{{ LinkForm.get('shortUrl')?.value?.length || 0 }}/10</p>
+                <div class="flex items-center gap-6 mb-8">
+                    <label for="descripcion" class="font-semibold w-24">Descripcion</label>
+                    <div class="flex flex-col gap-1 w-full">
+                        <textarea id="descripcion" class="w-full h-40 resize-none" pTextarea rows="5"
+                            placeholder="Escribe una descripcion" formControlName="description" maxlength="60">
+                        </textarea><br>
+                        <p class="text-sm text-gray-400">{{ LinkForm.get('description')?.value?.length || 0 }}/60</p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <p-button label="Cancelar" severity="secondary" (click)="linkDialog = !linkDialog" />
+                    @if(!editing){
+                    <p-button label="Crear" (click)="createLink()" ariaLabel="Crearlink" />
+                    } @else if(editing) {
+                    <p-button label="Actualizar" (click)="updateLink()" ariaLabel="Actualizarlink" />
+                    }
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+
+    <div class="m-12">
+        <p-table class="text-center" [value]=filteredLinks styleClass="centered-table"
+            [paginator]="filteredLinks.length>5" [rows]="5"
+            [tableStyle]="{ 'min-width': '50rem', 'text-align': 'center' }">
+            <ng-template #caption>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold">Lista de Links</span>
+                    <p-button icon="pi pi-refresh" rounded raised />
+                </div>
+            </ng-template>
+            <ng-template #header>
+                <tr>
+                    <th>Nombre</th>
+                    <th>URL</th>
+                    <th>Short URL</th>
+                    <th>Descripcion</th>
+                    <th>Acciones</th>
+                    <th>Clicks</th>
+                    <th>Estadisticas</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-filteredLinks>
+                <tr [id]="filteredLinks.id">
+                    <td>{{filteredLinks.name}}</td>
+                    <td>
+                        {{filteredLinks.originalUrl.length>25? (filteredLinks.originalUrl|slice:0:25) + '...':
+                        filteredLinks.originalUrl}}
+                    </td>
+                    <td><a class="text-blue-700 font-medium" href="{{filteredLinks.shortUrl}}"
+                            target="_blank">{{filteredLinks.shortUrl}}</a></td>
+                    <td>{{filteredLinks.description}}</td>
+                    <td>
+                        <p-button class="m-1 w-auto" label="Editar" icon="pi pi-pencil" [outlined]="true"
+                            (click)="showEditDialog(filteredLinks)" />
+                        <p-button class="m-1 w-auto" label="Eliminar" icon="pi pi-trash" severity="danger"
+                            (click)="deleteLink($event, filteredLinks)" [outlined]="true" />
+                    </td>
+                    <td>{{filteredLinks.clicks}}</td>
+                    <td><i class="pi pi-eye cursor-pointer"></i></td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</ng-template>

@@ -1,3 +1,4 @@
+import { logger } from '../../config/winston';
 import { LinkDto } from '../../domain';
 import { CustomErrors } from '../../domain/errors/custom.error';
 import { LinkService } from '../services/link.service';
@@ -41,12 +42,13 @@ export class LinkController {
 
   createLink = (req: Request, res: Response) => {
     const { user_id } = req.body.user;
+
     const [error, linkDto] = LinkDto.create({
       ...req.body,
       user: user_id,
     });
     if (error) {
-      console.error('Error creating link DTO:', error);
+      logger.error('Error creating link DTO:', error);
       return this.handleError(error, res);
     }
 
@@ -61,7 +63,8 @@ export class LinkController {
   };
 
   modifyLink = (req: Request, res: Response) => {
-    const [error, linkDto] = LinkDto.create(req.body);
+    const { user_id } = req.body.user;
+    const [error, linkDto] = LinkDto.create({ ...req.body, user: user_id });
     if (error) {
       console.error('Error creating link DTO:', error);
       return this.handleError(error, res);
@@ -93,6 +96,19 @@ export class LinkController {
       .deleteLink(id)
       .then(() => {
         return res.status(204).send();
+      })
+      .catch((error) => {
+        this.handleError(error, res);
+      });
+  };
+
+  validateLink = (req: Request, res: Response) => {
+    const { url } = req.body;
+    this.linkService
+      .validateLink(url)
+      .then((link) => {
+        console.log(link);
+        return res.status(200).json(link);
       })
       .catch((error) => {
         this.handleError(error, res);

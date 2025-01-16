@@ -41,6 +41,8 @@ export class LinkService {
 
   async createLink(link: LinkDto) {
     try {
+      console.log(link);
+
       const existsLink = await Link.findOne({ url: link.originalUrl });
       if (existsLink) {
         throw CustomErrors.internalError('Link already exists');
@@ -79,6 +81,9 @@ export class LinkService {
       }
       if (link.description) {
         linkDb.description = link.description;
+      }
+      if (link.shortUrl) {
+        linkDb.shortUrl = link.shortUrl;
       }
       await linkDb.save();
       return LinkEntity.fromObject(linkDb);

@@ -6,69 +6,12 @@
 
 
 <ng-template #content>
-    <p-toast /><p-confirmpopup />
-    <div class="card mt-3 gap-12 w-full flex justify-center">
+    <div class="flex m-3 justify-center gap-4">
         <p-autocomplete [(ngModel)]="value" [dropdown]="true" [suggestions]="filteredName"
             (completeMethod)="search($event)" [style]="{'width': '100%'}" (input)="onChange($event)"></p-autocomplete>
         <p-button label="Nuevo link" icon="pi pi-plus-circle" (onClick)="newLink()" />
-        <p-dialog header="Crear nuevo link" [modal]="true" [(visible)]="linkDialog"
-            [style]="{ width: '50%', height: '60%' }">
-            <form [formGroup]="LinkForm">
-                <div class="flex items-center gap-4 mb-4">
-                    <label for="name" class="font-semibold w-24">Nombre</label>
-                    <input pInputText id="name" class="flex-auto p-2 border-2 rounded" autocomplete="off"
-                        formControlName="name" /><br>
-                    @if (LinkForm.get('name')?.getError('required') && LinkForm.get('name')?.touched)
-                    {
-                    <p-message severity="error" text="Introduce un nombre"></p-message>
-                    }
-                </div>
-                <div class="flex items-center gap-4 mb-4">
-                    <label for="url" class="font-semibold w-24">URL</label>
-                    <input pInputText id="url" class="flex-auto p-2 border-2 rounded" autocomplete="off"
-                        formControlName="url" /><br>
-                    @if (LinkForm.get('url')?.getError('required') && LinkForm.get('url')?.touched)
-                    {
-                    <p-message severity="error" text="Introduce una URL"></p-message>
-                    } @else if (LinkForm.get('url')?.getError('pattern') && LinkForm.get('url')?.touched)
-                    {
-                    <p-message severity="error" text="URL no valida"></p-message>
-                    }
-                </div>
-                <div class="flex items-center gap-4 mb-4" *ngIf="plan?.name !== 'free'">
-                    <label for="url" class="font-semibold w-24">URL acortada</label>
-                    <input pInputText id="url" class="flex-auto p-2 border-2 rounded" autocomplete="off"
-                        formControlName="shortUrl" /><br>
-                    @if (LinkForm.get('shortUrl')?.touched && LinkForm.get('shortUrl')?.getError('urlInvalid'))
-                    {
-                    <p-message severity="error" text="URL en uso"></p-message>
-                    } @else if (LinkForm.get('shortUrl')?.touched && LinkForm.get('shortUrl')?.getError('pattern'))
-                    {
-                    <p-message severity="error" text="URL no valida"></p-message>
-                    }
-                </div>
-                <p class="text-sm text-gray-400">{{ LinkForm.get('shortUrl')?.value?.length || 0 }}/10</p>
-                <div class="flex items-center gap-6 mb-8">
-                    <label for="descripcion" class="font-semibold w-24">Descripcion</label>
-                    <div class="flex flex-col gap-1 w-full">
-                        <textarea id="descripcion" class="w-full h-40 resize-none" pTextarea rows="5"
-                            placeholder="Escribe una descripcion" formControlName="description" maxlength="60">
-                        </textarea><br>
-                        <p class="text-sm text-gray-400">{{ LinkForm.get('description')?.value?.length || 0 }}/60</p>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <p-button label="Cancelar" severity="secondary" (click)="linkDialog = !linkDialog" />
-                    @if(!editing){
-                    <p-button label="Crear" (click)="createLink()" ariaLabel="Crearlink" />
-                    } @else if(editing) {
-                    <p-button label="Actualizar" (click)="updateLink()" ariaLabel="Actualizarlink" />
-                    }
-                </div>
-            </form>
-        </p-dialog>
     </div>
-
+    <app-link-form [event]="event" [linkData]="linkToEdit" (saved)="handleFormDialog($event)"></app-link-form>
     <div class="m-12">
         <p-table class="text-center" [value]=filteredLinks styleClass="centered-table"
             [paginator]="filteredLinks.length>5" [rows]="5"
@@ -101,8 +44,8 @@
                             target="_blank">{{filteredLinks.shortUrl}}</a></td>
                     <td>{{filteredLinks.description}}</td>
                     <td>
-                        <p-button class="m-1 w-auto" label="Editar" icon="pi pi-pencil" [outlined]="true"
-                            (click)="showEditDialog(filteredLinks)" />
+                        <!-- <p-button class="m-1 w-auto" label="Editar" icon="pi pi-pencil" [outlined]="true"
+                            (click)="showEditDialog(filteredLinks)" /> -->
                         <p-button class="m-1 w-auto" label="Eliminar" icon="pi pi-trash" severity="danger"
                             (click)="deleteLink($event, filteredLinks)" [outlined]="true" />
                     </td>

@@ -24,6 +24,9 @@ import { DashboardService } from '../../services/dashboard.service';
 import { Link } from '../../interfaces/link.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ValidatorService } from '../../utils/validator.service';
+import { NameComponent } from '../../components/link-form.component';
+import { Subscription } from '../../interfaces/subscription.interface';
+import { LinkEvents } from '../../interfaces/link-events';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -38,7 +41,6 @@ interface AutoCompleteCompleteEvent {
     AutoCompleteModule,
     TableModule,
     ButtonModule,
-    Dialog,
     TextareaModule,
     ReactiveFormsModule,
     MessageModule,
@@ -46,6 +48,7 @@ interface AutoCompleteCompleteEvent {
     ToastModule,
     InputTextModule,
     ConfirmPopupModule,
+    NameComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -60,31 +63,10 @@ export class HomeComponent implements OnInit {
   private readonly _messageService = inject(MessageService);
   private readonly _validatorService = inject(ValidatorService);
 
-  plan = this._authService.userPlan;
+  event: LinkEvents | null = null;
+  linkToEdit: Link | null = null;
 
-  readonly LinkForm = this.fb.group({
-    name: ['', [Validators.required]],
-    shortUrl: [
-      '',
-      [
-        Validators.maxLength(10),
-        Validators.pattern(
-          /^(https?|ftp|file|mailto|data):\/\/[^\s/$.?#].[^\s]*$/i
-        ),
-      ],
-      this._validatorService.validateUrlPersonality(),
-    ],
-    url: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          /^(https?|ftp|file|mailto|data):\/\/[^\s/$.?#].[^\s]*$/i
-        ),
-      ],
-    ],
-    description: [''],
-  });
+  plan = this._authService.userPlan;
 
   links = computed(() => this._dashboardService.links());
   filteredLinks: Link[] = [];
@@ -105,7 +87,6 @@ export class HomeComponent implements OnInit {
   }
 
   value: string | undefined;
-
   search(event: AutoCompleteCompleteEvent) {
     if (event.query === '') {
       this.filteredLinks = this.links();
@@ -123,40 +104,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value.trim();
-
-    // Si el input está vacío, se muestran todos los links
-    if (value === '') {
-      this.filteredLinks = this.links();
-      this.filteredName = this.filteredLinks.map((link) => link.name);
-    }
-  }
-
-  linkDialog = false;
   newLink() {
-    if (this.limitLinks() || this.plan?.name === 'free') {
-      this.LinkForm.get('shortUrl')?.disable();
+    if (this.limitLinks()) {
       return;
     }
-    this.linkDialog = !this.linkDialog;
-    this.LinkForm.reset();
+
+    this.event = LinkEvents.Create;
   }
 
-  createLink() {
-    if (this.LinkForm.invalid) {
-      this.LinkForm.markAllAsTouched();
-      return;
+  handleFormDialog(link: Link) {
+    if (this.event === LinkEvents.Create) {
+      this.onCreate(link);
+    } else {
+      this.onEdit(link);
     }
 
-    this._dashboardService.createLink({
-      name: this.LinkForm.value.name,
-      originalUrl: this.LinkForm.value.url,
-      description: this.LinkForm.value.description,
-    } as Link);
-
-    this.linkDialog = !this.linkDialog;
-
+    // TODO:implementar servicio de animaciones
     // Selecciona el contenedor donde se insertan las filas
     const tableBody = document.querySelector('p-table tbody');
     if (!tableBody) {
@@ -187,34 +150,24 @@ export class HomeComponent implements OnInit {
     observer.observe(tableBody, { childList: true });
   }
 
-  editing = false;
-  linkToEdit: Link | undefined;
-  showEditDialog(link: Link) {
-    this.editing = true;
-    this.LinkForm.setValue({
-      name: link.name,
-      url: link.originalUrl,
-      shortUrl: link.shortUrl ?? '',
-      description: link.description || '',
-    });
-    this.LinkForm.get('url')?.disable();
-    this.linkDialog = !this.linkDialog;
-    this.linkToEdit = link;
+  onCreate(link: Link) {
+    const { name, originalUrl, shortUrl, description } = link;
+    this._dashboardService.createLink({
+      name,
+      originalUrl,
+      shortUrl,
+      description,
+    } as Link);
   }
 
-  updateLink() {
-    if (this.LinkForm.invalid) {
-      this.LinkForm.markAllAsTouched();
-      return;
-    }
-    this.linkDialog = !this.linkDialog;
-    this.editing = false;
-    this.LinkForm.get('url')?.enable();
-
+  onEdit(link: Link) {
+    const { id, name, originalUrl, shortUrl, description } = link;
     this._dashboardService.updateLink({
-      ...this.linkToEdit,
-      name: this.LinkForm.value.name,
-      description: this.LinkForm.value.description,
+      id,
+      name,
+      originalUrl,
+      shortUrl,
+      description,
     } as Link);
 
     const tbody = document.querySelector('p-table tbody');
@@ -267,8 +220,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value.trim();
+
+    // Si el input está vacío, se muestran todos los links
+    if (value === '') {
+      this.filteredLinks = this.links();
+      this.filteredName = this.filteredLinks.map((link) => link.name);
+    }
+  }
+
   private limitLinks() {
-    console.log(this.plan);
     if (this.plan?.name === 'free') {
       const links = this.links();
       if (links.length >= 5) {

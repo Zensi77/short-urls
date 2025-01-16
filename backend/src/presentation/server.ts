@@ -44,7 +44,7 @@ export class Server {
     this.app.use(cors(corsOptions)); // Enable CORS
 
     this.app.use(mongoSanitize()); // Sanitize data against NoSQL Injection Attacks
-    this.app.use(limiter); // Limit request from the same IP
+    // this.app.use(limiter); // Limit request from the same IP
     this.app.use(helmet()); // Set security headers
     this.app.use(
       // Set security headers for XSS protection
